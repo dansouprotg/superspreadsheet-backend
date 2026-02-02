@@ -15,11 +15,16 @@ if not DATABASE_URL:
     # This prevents the NoneType error on startup if .env is missing/unloaded
     DATABASE_URL = "sqlite:///./sql_app.db"
 
+from sqlalchemy.orm import sessionmaker, declarative_base, scoped_session
+
+# ... (Previous code)
+
 if DATABASE_URL.startswith("sqlite"):
     engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 else:
     engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+SessionLocal = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 
 Base = declarative_base()
 
