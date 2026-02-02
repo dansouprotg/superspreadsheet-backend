@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Date, DateTime, Enum
+from sqlalchemy import Column, Integer, String, ForeignKey, Date, DateTime, Enum, Boolean
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.database import Base
@@ -21,6 +21,7 @@ class Student(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(255), index=True, nullable=False)
     enrollment_date = Column(Date, default=func.now())
+    is_archived = Column(Boolean, default=False)  # Archive status
     class_id = Column(Integer, ForeignKey("classes.id"))
     enrolled_class = relationship("Class", back_populates="students")
     skills = relationship("Skill", back_populates="student", cascade="all, delete-orphan")
@@ -31,6 +32,7 @@ class Skill(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50), nullable=False)
     current_status = Column(Enum(SkillStatus), default=SkillStatus.RED)
+    score = Column(Integer, default=0) # Score out of 25
     last_updated = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
     student_id = Column(Integer, ForeignKey("students.id"))
     student = relationship("Student", back_populates="skills")

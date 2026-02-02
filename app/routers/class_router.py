@@ -37,3 +37,14 @@ def create_student_in_class(class_id: int, student: StudentCreate, db: Session =
     if db_class is None:
         raise HTTPException(status_code=404, detail="Class not found")
     return student_crud.create_student_for_class(db=db, student=student, class_id=class_id)
+
+@router.get("/{class_id}/students", response_model=List[Student])
+def read_class_students(
+    class_id: int, 
+    skip: int = 0, 
+    limit: int = 100, 
+    include_archived: bool = False, 
+    db: Session = Depends(get_db)
+):
+    students = student_crud.get_students_by_class_id(db, class_id=class_id, skip=skip, limit=limit, include_archived=include_archived)
+    return students

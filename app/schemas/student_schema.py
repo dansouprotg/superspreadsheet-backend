@@ -22,6 +22,7 @@ class StudentPromote(BaseModel):
 class Student(StudentBase):
     id: int
     enrollment_date: date
+    is_archived: bool  # Archive status
     skills: List[Skill] = []
     milestones: List[Milestone] = []
     enrolled_class: ClassInfo

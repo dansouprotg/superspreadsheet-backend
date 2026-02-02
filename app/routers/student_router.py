@@ -31,3 +31,17 @@ def promote_student_to_new_class(student_id: int, promotion: StudentPromote, db:
     if updated_student is None:
         raise HTTPException(status_code=404, detail="Student not found")
     return updated_student
+
+@router.put("/{student_id}/archive", response_model=Student)
+def archive_student_endpoint(student_id: int, db: Session = Depends(get_db)):
+    student = student_crud.archive_student(db, student_id)
+    if not student:
+        raise HTTPException(status_code=404, detail="Student not found")
+    return student
+
+@router.put("/{student_id}/restore", response_model=Student)
+def restore_student_endpoint(student_id: int, db: Session = Depends(get_db)):
+    student = student_crud.restore_student(db, student_id)
+    if not student:
+        raise HTTPException(status_code=404, detail="Student not found")
+    return student
