@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from . import student_crud, class_crud, analytics_crud
-import pandas as pd
+
 import io
 from datetime import datetime
 
@@ -13,24 +13,31 @@ from reportlab.lib import colors
 from reportlab.graphics.shapes import Drawing
 from reportlab.graphics.charts.barcharts import VerticalBarChart
 
-# --- CSV and XLSX Generation (Unchanged) ---
 
-def generate_class_report_df(db: Session, class_id: int):
+# --- CSV and XLSX Generation (Refactored to remove Pandas) ---
+
+def generate_class_report_data(db: Session, class_id: int):
     db_class = class_crud.get_class(db, class_id=class_id)
     if not db_class:
         return None
 
+    ordered_columns = ["Student Name", "Listening", "Reading", "Speaking", "Writing"]
     data = []
+    
     for student in db_class.students:
         student_data = {"Student Name": student.name}
+        # Get skill status values
         skills_map = {skill.name: skill.current_status.value for skill in student.skills}
-        student_data.update(skills_map)
-        data.append(student_data)
+        
+        # Ensure all columns exist (default to empty string if missing)
+        row = {}
+        row["Student Name"] = student.name
+        for col in ordered_columns[1:]: # Skip Student Name
+            row[col] = skills_map.get(col, "")
+            
+        data.append(row)
 
-    df = pd.DataFrame(data)
-    ordered_columns = ["Student Name", "Listening", "Reading", "Speaking", "Writing"]
-    df = df.reindex(columns=[col for col in ordered_columns if col in df.columns])
-    return df
+    return data, ordered_columns
 
 # --- NEW Professional PDF Generation using reportlab ---
 
