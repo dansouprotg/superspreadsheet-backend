@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+sqlalchemy
+mysql-connector-python
+python-dotenv
+fastapi-mail
+alembic
+python-jose[cryptography]
+python-multipart
+passlib
+bcrypt==3.2.0
+pandas
+XlsxWriter
+reportlab
