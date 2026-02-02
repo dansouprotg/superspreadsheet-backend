@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), '..'
 # --- START OF MODIFICATIONS ---
 
 # Import your Base object from the database file
-from app.database import Base
+from app.database import Base, DATABASE_URL
 
 # Explicitly import all of your models
 from app.models.user_model import User
@@ -26,6 +26,9 @@ from app.models.school_models import Class, Student
 # Set the target_metadata to your Base's metadata
 target_metadata = Base.metadata
 
+# Overwrite the sqlalchemy.url in the configuration with the one from the environment
+if DATABASE_URL:
+    config.set_main_option("sqlalchemy.url", DATABASE_URL)
 # --- END OF MODIFICATIONS ---
 
 
