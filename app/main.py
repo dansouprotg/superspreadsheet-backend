@@ -10,9 +10,7 @@ from app.routers import auth_router, user_router, class_router, skill_router, st
 app = FastAPI()
 
 # ... (origins and middleware code is the same)
-origins = [
-    "http://localhost:5173",
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
