@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.database import Base, engine
+# from app.database import Base, engine
 from fastapi.responses import HTMLResponse
 
 # from app.routers import auth_router, user_router, class_router, skill_router, student_router, analytics_router, export_router 
