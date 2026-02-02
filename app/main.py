@@ -2,10 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import Base, engine
-from app.models.user_model import User
-from app.models.school_models import Class, Student
+from fastapi.responses import HTMLResponse
 
-from app.routers import auth_router, user_router, class_router, skill_router, student_router, analytics_router, export_router # Import new router
+# from app.routers import auth_router, user_router, class_router, skill_router, student_router, analytics_router, export_router 
 
 app = FastAPI()
 
@@ -20,14 +19,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(auth_router.router)
-app.include_router(user_router.router)
-app.include_router(class_router.router)
-app.include_router(skill_router.router)
-app.include_router(student_router.router)
-app.include_router(analytics_router.router)
-app.include_router(export_router.router) # Add new router
+# app.include_router(auth_router.router)
+# app.include_router(user_router.router)
+# app.include_router(class_router.router)
+# app.include_router(skill_router.router)
+# app.include_router(student_router.router)
+# app.include_router(analytics_router.router)
+# app.include_router(export_router.router)
 
-@app.get("/")
+@app.get("/", response_class=HTMLResponse)
 def read_root():
-    return {"message": "Welcome to the Student Progress Tracking API"}
+    return "<h1><h1>It Works!</h1><p>FastAPI is running successfully.</p>"
